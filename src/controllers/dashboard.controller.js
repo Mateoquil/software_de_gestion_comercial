@@ -1,13 +1,13 @@
-import ProductoService  from '../services/productosService.js';
+import ProductoEtiquetaservices  from '../services/productoEtiquetaService.js';
 class DashboardController {
     
-    // traer todas las etiquetas
-    // traer todos los etiquetas por producto
+
     traerTodosLosProductos = async (req, res) => {
         try {
-            const service = new ProductoService();
-            const productos = await service.findAll();
-            res.json(productos);
+            console.log('hola')
+            const productoEtiquetaservices = new ProductoEtiquetaservices();
+            const ProductosConEtiqueta = await productoEtiquetaservices.TraerProductosConEtiquetas();
+            res.status(200).json(ProductosConEtiqueta);
         } catch (error) {
             console.error('Error al buscar los productos:', error);
             res.status(500).json({ error: 'Error al buscar los productos' });
@@ -17,9 +17,9 @@ class DashboardController {
     traerProductoPorNombre = async (req, res) => {
         try{
             const nombreNormalizado = req.body.nombreProducto.toLowerCase().trim();
-            const service = new ProductoService();
-            const productoEncontrado = await service.findOneByName(nombreNormalizado)
-            res.json(productoEncontrado);            
+            const productoEtiquetaservices = new ProductoEtiquetaservices(); 
+            const traerProductoPorNombreConEtiqueta = await productoEtiquetaservices.TraerProductoConEtiquetasPorNombre(nombreNormalizado);
+            res.status(200).json(traerProductoPorNombreConEtiqueta);            
         } catch (error) {
             console.error('Error al buscar el producto:', error);
             res.status(500).json({ error: 'Error al buscar el producto' });

@@ -4,8 +4,8 @@ import ticketdeventa from "./ticketdeventa.js"
 import ticketdeventaproductos from "./ticketdeventaproductos.js"
 
 // Un producto pertenece a una etiqueta
-producto.belongsTo(etiquetas, { foreignKey: "etiquetaId" });
-etiquetas.hasMany(producto, { foreignKey: "etiquetaId" });
+producto.belongsTo(etiquetas, { foreignKey: "etiquetaId", as: 'etiquetas' });
+etiquetas.hasMany(producto, { foreignKey: "etiquetaId",as: 'productos' });
 
 producto.belongsTo(ticketdeventaproductos,{foreignKey:"idTicketDeVentaProductos"})
 ticketdeventa.hasMany(ticketdeventaproductos,{foreignKey:"idTicketDeVentaProductos"})

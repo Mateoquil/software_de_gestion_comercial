@@ -8,9 +8,11 @@ class ProductoService{
     async create(nombreProducto, precioProducto, stockProducto, urlProducto,activoProducto, etiquetaIdProducto){
         
         try{
-            const productoExiste = this.findOneByName(nombreProducto)
-            if(!productoExiste){
-                throw new Error("no se encontro el producto al intentar actualizar")
+
+            const productoEncontrado = await Productos.findOne({where:{nombre:nombreProducto}})
+
+            if(productoEncontrado){
+                throw new Error("nombre del producto ya existe")
             }
             const crearProducto = await Productos.create({
                 nombre: nombreProducto,
@@ -31,7 +33,7 @@ class ProductoService{
         try{
             const productoExiste = this.findOne(idProducto)
             if(!productoExiste){
-                throw new Error("no se encontro el producto al intentar actualizar")
+                throw new Error("el producto no existe")
             }
 
 
@@ -102,7 +104,6 @@ class ProductoService{
             console.log("error en producto service al eliminar:",error)            
         }
     }
-
 }
 
 export default ProductoService

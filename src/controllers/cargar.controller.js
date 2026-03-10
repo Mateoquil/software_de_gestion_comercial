@@ -2,12 +2,27 @@ import ProductoService from '../services/productosService.js';
 import EtiquetaService from '../services/etiquetasService.js';
 class CrearController {
 
+    // validar crear producto y crear etiqueta
+
     crearProductos = async (req, res) => {
         try {
             const datos = req.body
+            if (!datos.nombre || !datos.precio || !datos.stock || !datos.etiquetaId) {
+                return res.status(400).json({ error: 'Faltan datos obligatorios' });
+            }
+            const nombreValido = datos.nombre.trim();
+            const precioValido = datos.precio.trim();
+            const stockValido = datos.stock.trim();
+            const etiquetaValida = datos.etiqueta.trim();
+            const urlValida = datos.url.trim();
+
             const service = new ProductoService();
-            const productos = await service.create(datos.nombre, datos.precio, datos.stock, datos.url, datos.activo, datos.etiquetaId);
-            res.json(productos);
+            const productos = await service.create(nombreValido, precioValido, stockValido, urlValida, datos.activo, etiquetaValida);
+            if(!productos){
+                return res.status(400).json({ error: 'No se pudo crear el producto' });
+            }
+
+            res.status(201).json({productos});
         } catch (error) {
             console.error('Error al buscar los productos:', error);
             res.status(500).json({ error: 'Error al buscar los productos' });
@@ -16,13 +31,18 @@ class CrearController {
 
     crearEtiquetas = async (req, res) => {
         try {
-            const datos = req.body
+            const datos = req.body 
+            if (!datos.nombre) {
+                return res.status(400).json({ error: 'Faltan datos obligatorios' });
+            }
+            const nombreValido= datos.nombre.trim();
+
             const service = new EtiquetaService();
-            const etiqueta = await service.create(datos.nombre);
+            const etiqueta = await service.create(nombreValido);
             if (!etiqueta) {
                 return res.status(400).json({ error: 'No se pudo crear la etiqueta' });
             }
-            res.status(200).json({
+            res.status(201).json({
                 message: 'Etiqueta creada exitosamente',
                 etiquetaId: etiqueta.id,
                 etiquetaNombre: etiqueta.tipo,
@@ -33,8 +53,6 @@ class CrearController {
             res.status(500).json({ error: 'Error al buscar los productos' });
         }
     }
-
-
 }
 
 export default CrearController;
