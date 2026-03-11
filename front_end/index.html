@@ -3,128 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Productos</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Supermercado - POS System</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    
+    <div class="container mt-4">
+        
         <!-- Tabs -->
-        <div class="tabs">
-            <button class="tab active">All Homework</button>
-            <button class="tab">Daily Practice</button>
-            <button class="tab">Public Courses</button>
-            <button class="tab">Cancel Work</button>
-        </div>
-
-        <!-- Header -->
-        <div class="header">
-            <h1 class="title">filtro de producos por precio nombre etc</h1>
-        </div>
-
-        <!-- Filters -->
-        <div class="filters">
-            <div class="input-group">
-                <label for="workName">Work Name</label>
-                <input type="text" id="workName" placeholder="Please enter here">
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="#cuenta">Cuenta</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#carrito">Carrito</a>
+            </li>
+        </ul>
+        
+        <h1 class="mb-4">Supermercado</h1>
+        
+        <div class="row mb-3">
+            <div class="col-md-4 mb-2">
+                <label for="nombreProducto" class="form-label">Nombre</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="nombreProducto"
+                    placeholder="Ingrese el nombre del producto"
+                >
             </div>
-
-            <div class="input-group">
-                <label for="courseName">Course Name</label>
-                <select id="courseName">
-                    <option value="">Please choose</option>
-                    <option value="design">Design Training Camp</option>
-                    <option value="interactive">Interactive Course</option>
+            
+            <div class="col-md-4 mb-2">
+                <label for="tipoProducto" class="form-label">Tipo de Producto</label>
+                <select class="form-select" id="tipoProducto">
+                    <option value="">Seleccione tipo</option>
+                    <option value="alimentos">Alimentos</option>
+                    <option value="golosinas">Golosinas</option>
+                    <option value="bebidas">Bebidas</option>
+                    <option value="limpieza">Limpieza</option>
+                    <option value="otros">Otros</option>
                 </select>
             </div>
-
-            <button class="btn btn-primary" onclick="searchProducts()">Search</button>
-            <button class="btn btn-secondary">Export</button>
+            
+            <div class="col-md-4 mb-2 d-flex align-items-end gap-2">
+                <button class="btn btn-primary">
+                    <i class="bi bi-search"></i> Buscar
+                </button>
+                <button class="btn btn-success">
+                    <i class="bi bi-download"></i> Exportar
+                </button>
+            </div>
         </div>
-
-        <!-- Table -->
-        <div class="table-container">
-            <table>
-                <thead>
+        
+        <div class="mb-3">
+            <button class="btn btn-success me-2">Comprar</button>
+            <button class="btn btn-secondary">Cancelar</button>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
                     <tr>
-                        <th>nombre del producto</th>
-                        <th>etiqueta</th>
-                        <th>precio</th>
-                        <th>stock</th>
-                        <th>Operate</th>
+                        <th>Nombre del producto</th>
+                        <th>Etiqueta</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Operaciones</th>
                     </tr>
                 </thead>
-                <tbody id="productTable">
+                <tbody>
                     <tr>
-                        <td>Icon Design</td>
-                        <td>Design Training Camp</td>
-                        <td>2022.03.11 22:20</td>
-                        <td>0 / 80</td>
-                        <td class="actions">
-                            <button class="btn btn-small btn-notice">Notice</button>
-                            <button class="btn btn-small btn-reply" onclick="replyProduct(this)">Reply</button>
-                            <button class="btn btn-small btn-cancel" onclick="cancelProduct(this)">Cancel</button>
+                        <td>Yogur</td>
+                        <td><span class="badge bg-info">Alimentos</span></td>
+                        <td>$</td>
+                        <td>15</td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1">Comprar</button>
+                            <button class="btn btn-sm btn-danger">Cancelar</button>
                         </td>
                     </tr>
                     <tr>
-                        <td>Interface Design</td>
-                        <td>Design Training Camp</td>
-                        <td>2022.02.28 22:25</td>
-                        <td>17 / 63</td>
-                        <td class="actions">
-                            <button class="btn btn-small btn-notice">Notice</button>
-                            <button class="btn btn-small btn-reply" onclick="replyProduct(this)">Reply</button>
-                            <button class="btn btn-small btn-cancel" onclick="cancelProduct(this)">Cancel</button>
+                        <td>Fanta</td>
+                        <td><span class="badge bg-info">Bebidas</span></td>
+                        <td>$</td>
+                        <td>8</td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1">Comprar</button>
+                            <button class="btn btn-sm btn-danger">Cancelar</button>
                         </td>
                     </tr>
                     <tr>
-                        <td>Product Experience</td>
-                        <td>Interactive Course</td>
-                        <td>2022.02.23 22:40</td>
-                        <td>22 / 58</td>
-                        <td class="actions">
-                            <button class="btn btn-small btn-notice">Notice</button>
-                            <button class="btn btn-small btn-reply" onclick="replyProduct(this)">Reply</button>
-                            <button class="btn btn-small btn-cancel" onclick="cancelProduct(this)">Cancel</button>
+                        <td>Fideos</td>
+                        <td><span class="badge bg-primary">Alimentos</span></td>
+                        <td>$</td>
+                        <td>12</td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1">Comprar</button>
+                            <button class="btn btn-sm btn-danger">Cancelar</button>
                         </td>
                     </tr>
                     <tr>
-                        <td>Design Revision Exercises</td>
-                        <td>Design Training Camp</td>
-                        <td>2022.02.10 10:25</td>
-                        <td>33 / 47</td>
-                        <td class="actions">
-                            <button class="btn btn-small btn-notice">Notice</button>
-                            <button class="btn btn-small btn-reply" onclick="replyProduct(this)">Reply</button>
-                            <button class="btn btn-small btn-cancel" onclick="cancelProduct(this)">Cancel</button>
+                        <td>Coca-Cola</td>
+                        <td><span class="badge bg-warning">Bebidas</span></td>
+                        <td>$</td>
+                        <td>20</td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1">Comprar</button>
+                            <button class="btn btn-sm btn-danger">Cancelar</button>
                         </td>
                     </tr>
                     <tr>
-                        <td>Color Practice</td>
-                        <td>Design Training Camp</td>
-                        <td>2022.02.07 20:38</td>
-                        <td>58 / 22</td>
-                        <td class="actions">
-                            <button class="btn btn-small btn-notice">Notice</button>
-                            <button class="btn btn-small btn-reply" onclick="replyProduct(this)">Reply</button>
-                            <button class="btn btn-small btn-cancel" onclick="cancelProduct(this)">Cancel</button>
+                        <td>Arroz</td>
+                        <td><span class="badge bg-warning">Alimentos</span></td>
+                        <td>$</td>
+                        <td>25</td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1">Comprar</button>
+                            <button class="btn btn-sm btn-danger">Cancelar</button>
                         </td>
                     </tr>
                     <tr>
-                        <td>Competition Analysis</td>
-                        <td>Interactive Course</td>
-                        <td>2022.01.23 22:17</td>
-                        <td>27 / 53</td>
-                        <td class="actions">
-                            <button class="btn btn-small btn-notice">Notice</button>
-                            <button class="btn btn-small btn-reply" onclick="replyProduct(this)">Reply</button>
-                            <button class="btn btn-small btn-cancel" onclick="cancelProduct(this)">Cancel</button>
+                        <td>Leche</td>
+                        <td><span class="badge bg-secondary">Bebidas</span></td>
+                        <td>$</td>
+                        <td>5</td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1">Comprar</button>
+                            <button class="btn btn-sm btn-danger">Cancelar</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        
     </div>
-
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Tu JS -->
     <script src="script.js"></script>
+    
 </body>
 </html>
