@@ -1,5 +1,5 @@
 import sequelize from './src/configDatabase/config.js';
-import { etiquetas, producto, ticketdeventa, ticketdeventaproductos,etiquetaProductos } from './src/models/association.js';
+import { etiquetas, producto, ticketdeventa, ticketdeventaproductos, etiquetaProductos } from './src/models/association.js';
 import express from "express";
 import dashboard from "./src/routes/dashboard.routes.js";
 import Crear from "./src/routes/cargar.routes.js";
@@ -14,7 +14,7 @@ app.use("/api", Crear);
 
 async function sincronizar() {
     try {
-        await sequelize.sync({ alter: false });
+        await sequelize.sync({ alter: true });
         console.log("✅ Sincronización exitosa - Todas las tablas han sido creadas/actualizadas");
     } catch (error) {
         console.log("❌ Error en la sincronización:", error.message);
@@ -24,7 +24,7 @@ async function sincronizar() {
 sincronizar();
 
 app.get("/health/", (req, res) => {
-res.send("it's working");
+    res.send("it's working");
 });
 
 

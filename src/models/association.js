@@ -5,26 +5,24 @@ import ticketdeventaproductos from "./ticketdeventaproductos.js"
 import etiquetaProductos from "./etiqueta-productos.js"
 
 // Un producto pertenece a una etiqueta
-// producto.belongsToMany(etiquetas, {through:etiquetaProductos, foreignKey: "productoId", as: 'etiquetas' });
-// etiquetas.belongsToMany(producto, { through:etiquetaProductos,foreignKey: "etiquetaId",as: 'productos' });
+// producto.belongsToMany(etiquetas, { through: etiquetaProductos, foreignKey: "productoId", as: 'etiquetas' });
+// etiquetas.belongsToMany(producto, { through: etiquetaProductos, foreignKey: "etiquetaId", as: 'productos' });
 producto.belongsToMany(etiquetas, {
     through: etiquetaProductos,
     foreignKey: "productoId",
-    otherKey: "etiquetaId",
-    as: "etiquetas"
+    otherKey: "etiquetaId"
 })
 
 etiquetas.belongsToMany(producto, {
     through: etiquetaProductos,
     foreignKey: "etiquetaId",
-    otherKey: "productoId",
-    as: "productos"
+    otherKey: "productoId"
 })
 
 
 
-producto.belongsToMany(ticketdeventaproductos,{foreignKey:"idTicketDeVentaProductos"})
-ticketdeventa.hasMany(ticketdeventaproductos,{foreignKey:"idTicketDeVentaProductos"})
+producto.belongsTo(ticketdeventaproductos, { foreignKey: "idTicketDeVentaProductos" })
+ticketdeventa.hasMany(ticketdeventaproductos, { foreignKey: "idTicketDeVentaProductos" })
 
 export {
     etiquetas,
