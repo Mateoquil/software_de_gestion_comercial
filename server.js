@@ -1,5 +1,5 @@
 import sequelize from './src/configDatabase/config.js';
-import { etiquetas, producto, ticketdeventa, ticketdeventaproductos,etiquetaProductos } from './src/models/association.js';
+import { etiquetas, producto, ticketdeventa, ticketdeventaproductos, etiquetaProductos } from './src/models/association.js';
 import express from "express";
 import dashboard from "./src/routes/dashboard.routes.js";
 import Crear from "./src/routes/cargar.routes.js";
@@ -24,7 +24,7 @@ async function sincronizar() {
 sincronizar();
 
 app.get("/health/", (req, res) => {
-res.send("it's working");
+    res.send("it's working");
 });
 
 
