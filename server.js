@@ -1,5 +1,5 @@
 import sequelize from './src/configDatabase/config.js';
-import { etiquetas, producto, ticketdeventa, ticketdeventaproductos } from './src/models/association.js';
+import { etiquetas, producto, ticketdeventa, ticketdeventaproductos,etiquetaProductos } from './src/models/association.js';
 import express from "express";
 import dashboard from "./src/routes/dashboard.routes.js";
 import Crear from "./src/routes/cargar.routes.js";
