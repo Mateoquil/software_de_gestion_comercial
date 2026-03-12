@@ -7,9 +7,10 @@ class ProductoEtiqueta {
     async TraerProductoConEtiquetasPorNombre(nombreDelProducto) {
         try {
             const productosConEtiquetas = await productos.findOne({
-                where: { nombre: nombreDelProducto },
+                where:{nombre:nombreDelProducto},
                 include: [{
                     model: etiquetas,
+                    as: 'etiquetas',
                     through: { attributes: [] }
                 }]
             });
@@ -22,12 +23,15 @@ class ProductoEtiqueta {
 
     async TraerProductosConEtiquetas() {
         try {
-            const [count, rows] = await productos.findAndCountAll({
+            const { count, rows }  = await productos.findAndCountAll({
                 include: [{
                     model: etiquetas,
+                    as: 'etiquetas',
                     through: { attributes: [] }
                 }]
             });
+            console.log(`count ${count}`);
+            console.log(`count ${rows}`);
             return {
                 count,
                 productos: rows
@@ -36,7 +40,7 @@ class ProductoEtiqueta {
             console.error('Error al traer productos con etiquetas:', error);
             throw error;
         }
-    }
+}
 
 
 

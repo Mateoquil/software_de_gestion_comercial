@@ -5,6 +5,8 @@ class DashboardController {
     traerTodosLosProductos = async (req, res) => {
         try {
             console.log('hola')
+            console.log('hola')
+            console.log('hola')
             const productoEtiquetaservices = new ProductoEtiquetaservices();
             const ProductosConEtiqueta = await productoEtiquetaservices.TraerProductosConEtiquetas();
             res.status(200).json(ProductosConEtiqueta);

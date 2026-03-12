@@ -14,7 +14,7 @@ app.use("/api", Crear);
 
 async function sincronizar() {
     try {
-        await sequelize.sync({ alter: true });
+        await sequelize.sync({ alter: false });
         console.log("✅ Sincronización exitosa - Todas las tablas han sido creadas/actualizadas");
     } catch (error) {
         console.log("❌ Error en la sincronización:", error.message);
