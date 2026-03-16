@@ -3,7 +3,7 @@ import etiquetas from "../models/etiquetas.js"
 class EtiquetaService{
     async create(tipoEtiqueta){
         try{
-            const etiquetaExistente = await etiquetas.findOne(tipoEtiqueta)
+            const etiquetaExistente = await etiquetas.findOne({where:{tipo:tipoEtiqueta}})
 
             if(etiquetaExistente){
                 throw new Error("La etiqueta ya existe")

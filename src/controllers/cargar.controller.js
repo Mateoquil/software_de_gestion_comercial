@@ -11,9 +11,9 @@ class CrearController {
                 return res.status(400).json({ error: 'Faltan datos obligatorios' });
             }
             const nombreValido = datos.nombre.trim();
-            const precioValido = datos.precio.trim();
-            const stockValido = datos.stock.trim();
-            const etiquetaValida = datos.etiqueta.trim();
+            const precioValido = datos.precio;
+            const stockValido = datos.stock;
+            const etiquetaValida = datos.etiqueta;
             const urlValida = datos.url.trim();
 
             const service = new ProductoService();
@@ -32,10 +32,10 @@ class CrearController {
     crearEtiquetas = async (req, res) => {
         try {
             const datos = req.body 
-            if (!datos.nombre) {
+            if (!datos.tipo) {
                 return res.status(400).json({ error: 'Faltan datos obligatorios' });
             }
-            const nombreValido= datos.nombre.trim();
+            const nombreValido= datos.tipo.trim();
 
             const service = new EtiquetaService();
             const etiqueta = await service.create(nombreValido);

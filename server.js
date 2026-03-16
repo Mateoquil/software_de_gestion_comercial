@@ -3,10 +3,13 @@ import { etiquetas, producto, ticketdeventa, ticketdeventaproductos, etiquetaPro
 import express from "express";
 import dashboard from "./src/routes/dashboard.routes.js";
 import Crear from "./src/routes/cargar.routes.js";
+import cors from "cors";
 
 const app = express();
 
 app.use(express.json());
+
+app.use(cors());
 
 // Ruta principal
 app.use("/api", dashboard);

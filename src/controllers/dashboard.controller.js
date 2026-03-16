@@ -18,7 +18,9 @@ class DashboardController {
 
     traerProductoPorNombre = async (req, res) => {
         try{
-            const nombreNormalizado = req.body.nombreProducto.toLowerCase().trim();
+            console.log("estoy en productos por nombre")
+            const nombreNormalizado = req.params.nombre.toLowerCase().trim();
+
             const productoEtiquetaservices = new ProductoEtiquetaservices(); 
             const traerProductoPorNombreConEtiqueta = await productoEtiquetaservices.TraerProductoConEtiquetasPorNombre(nombreNormalizado);
             res.status(200).json(traerProductoPorNombreConEtiqueta);            
