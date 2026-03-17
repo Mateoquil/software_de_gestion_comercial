@@ -14,6 +14,8 @@ class ProductoEtiqueta {
                     through: { attributes: [] }
                 }]
             });
+
+            console.log("productosConEtiquetas:",productosConEtiquetas)
             return productosConEtiquetas;
         } catch (error) {
             console.error('Error al traer productos con etiquetas:', error);

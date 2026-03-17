@@ -4,7 +4,7 @@ import sequelize from "../configDatabase/config.js";
 
 const etiquetaProductos = sequelize.define('etiquetaProductos', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    producto: { type: DataTypes.INTEGER, allowNull: false },
+    productoId: { type: DataTypes.INTEGER, allowNull: false },
     etiquetaId: { type: DataTypes.INTEGER, allowNull: false }
 }, {
     tableName: 'etiquetaProductos',
