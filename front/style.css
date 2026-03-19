@@ -1,231 +1,261 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/*  ============================================
+        Custom styles para POS System
+        Compatible con Bootstrap 5
+    ============================================ */
+
+/* Variables personalizadas */
+:root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --bg-gradient-start: #f9fafb;
+    --bg-gradient-end: #f3f4f6;
 }
 
+/* Fondo degradado suave */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); /* Fondo neutro gris claro */
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
     min-height: 100vh;
-    padding: 20px;
 }
 
+/* Mejora visual del container principal */
 .container {
-    max-width: 1400px;
-    margin: 0 auto;
     background: white;
     border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    padding: 30px;
-}
-
-/* Tabs */
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #e5e7eb;
-}
-
-.tab {
-    padding: 12px 24px;
-    background: none;
-    border: none;
-    font-size: 15px;
-    font-weight: 500;
-    color: #6b7280;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s;
-}
-
-.tab:hover {
-    color: #4f46e5;
-}
-
-.tab.active {
-    color: #4f46e5;
-    border-bottom-color: #4f46e5;
-}
-
-/* Header */
-.header {
-    margin-bottom: 30px;
-}
-
-.title {
-    font-size: 24px;
-    color: #1f2937;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-top: 20px;
     margin-bottom: 20px;
+}
+
+/* Tabs con mejor hover */
+.nav-tabs .nav-link {
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    transform: translateY(-2px);
+}
+
+.nav-tabs .nav-link.active {
     font-weight: 600;
 }
 
-/* Filters */
-.filters {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto auto;
-    gap: 15px;
-    margin-bottom: 25px;
+/* Mejora visual de la tabla */
+.table-hover tbody tr {
+    transition: all 0.2s ease;
 }
 
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.01);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.input-group label {
-    font-size: 13px;
-    font-weight: 500;
-    color: #6b7280;
+/* Títulos más elegantes */
+h1 {
+    font-weight: 700;
+    color: #1f2937;
+    letter-spacing: -0.5px;
 }
 
-.input-group input,
-.input-group select {
-    padding: 10px 15px;
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 14px;
-    transition: all 0.3s;
+/* Inputs con mejor focus */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.15);
 }
 
-.input-group input:focus,
-.input-group select:focus {
-    outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-}
-
+/* Botones con efectos mejorados */
 .btn {
-    padding: 10px 24px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
+    transition: all 0.3s ease;
     font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-    align-self: flex-end;
+    letter-spacing: 0.3px;
 }
 
-.btn-primary {
-    background: #4f46e5;
-    color: white;
-}
-
-.btn-primary:hover {
-    background: #4338ca;
+.btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
 }
 
-.btn-secondary {
-    background: #3b82f6;
-    color: white;
+.btn-success:hover {
+    box-shadow: 0 6px 16px rgba(25, 135, 84, 0.3);
 }
 
 .btn-secondary:hover {
-    background: #2563eb;
+    box-shadow: 0 6px 16px rgba(108, 117, 125, 0.3);
 }
 
-/* Table */
-.table-container {
-    overflow-x: auto;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
+.btn-danger:hover {
+    box-shadow: 0 6px 16px rgba(220, 53, 69, 0.3);
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-thead {
-    background: #f9fafb;
-}
-
-th {
-    padding: 16px;
-    text-align: left;
-    font-size: 13px;
+/* Badges más destacados */
+.badge {
     font-weight: 600;
-    color: #6b7280;
+    padding: 6px 12px;
+    letter-spacing: 0.3px;
+}
+
+/* Input group con mejor diseño */
+.input-group {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.input-group .form-control {
+    border-right: none;
+}
+
+.input-group .btn {
+    border-left: none;
+}
+
+/* Alertas con animación de entrada */
+.alert {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tabla responsive mejorada */
+.table-responsive {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Header de tabla más destacado */
+.table thead {
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+}
+
+.table thead th {
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-}
-
-td {
-    padding: 16px;
-    border-top: 1px solid #e5e7eb;
-    font-size: 14px;
-    color: #1f2937;
-}
-
-tbody tr {
-    transition: background 0.2s;
-}
-
-tbody tr:hover {
-    background: #f9fafb;
-}
-
-/* Action buttons */
-.actions {
-    display: flex;
-    gap: 8px;
-}
-
-.btn-small {
-    padding: 6px 16px;
     font-size: 13px;
-    border-radius: 6px;
-    border: 1px solid;
 }
 
-.btn-notice {
-    background: white;
-    color: #3b82f6;
-    border-color: #3b82f6;
+/* Filas de tabla con separación visual */
+.table tbody td {
+    vertical-align: middle;
+    padding: 16px;
 }
 
-.btn-notice:hover {
-    background: #3b82f6;
-    color: white;
+/* Labels más visibles */
+.form-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
 }
 
-.btn-reply {
-    background: white;
-    color: #10b981;
-    border-color: #10b981;
+/* Datalist autocompletado */
+datalist {
+    font-family: inherit;
 }
 
-.btn-reply:hover {
-    background: #10b981;
-    color: white;
-}
-
-.btn-cancel {
-    background: white;
-    color: #ef4444;
-    border-color: #ef4444;
-}
-
-.btn-cancel:hover {
-    background: #ef4444;
-    color: white;
-}
-
-/* Responsive */
+/* Responsive para móviles */
 @media (max-width: 768px) {
-    .filters {
-        grid-template-columns: 1fr;
+    .container {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border-radius: 12px;
+        padding: 20px;
     }
 
-    .table-container {
-        font-size: 12px;
+    h1 {
+        font-size: 24px;
     }
 
-    th, td {
+    .table thead th,
+    .table tbody td {
         padding: 10px;
+        font-size: 13px;
     }
+
+    .btn {
+        font-size: 13px;
+        padding: 8px 16px;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+
+    .input-group .btn {
+        width: 100%;
+        margin-top: 8px;
+    }
+}
+
+/* Animación de carga */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(79, 70, 229, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Tooltips mejorados (si los usás) */
+.tooltip {
+    font-size: 13px;
+}
+
+/* Placeholder más sutil */
+::placeholder {
+    color: #9ca3af;
+    opacity: 1;
+}
+
+/* Scrollbar personalizada (solo Chrome/Edge) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Estado de focus visible para accesibilidad */
+*:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Mejora visual para el contador del carrito */
+#carritoCount {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 7px;
+    position: relative;
+    top: -2px;
+    margin-left: 4px;
 }

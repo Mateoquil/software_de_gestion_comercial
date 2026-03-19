@@ -1,7 +1,7 @@
 console.log("INICIO JS - Tienda");
 
 const tablePadre = document.querySelector("#tablePadre");
-let todosLosProductos = []; // Guardar todos los productos para filtrar
+let todosLosProductos = [];
 
 // Consultar API
 const consultarApi = async (url) => {
@@ -42,8 +42,15 @@ const actualizarContadorCarrito = () => {
 const getBadgeClass = (etiqueta) => {
     const colores = {
         "Alimentos": "bg-primary",
-        "Bebidas": "bg-secondary", 
-        "gaseosas": "bg-info",
+        "Bebidas": "bg-secondary",
+        "Gaseosas": "bg-info",
+        "Jugos": "bg-secondary",
+        "Snacks": "bg-warning",   
+        "Golosinas": "bg-warning",
+        "Lacteos": "bg-primary",
+        "Limpieza": "bg-success",
+        "Higiene": "bg-success",
+        "Otros": "bg-danger",
         "Sin etiqueta": "bg-danger"
     };
     return colores[etiqueta] || "bg-secondary";
@@ -74,11 +81,9 @@ const crearProducto = (producto) => {
 const agregarAlCarrito = (producto) => {
     let carrito = obtenerCarrito();
     
-    // Verificar si el producto ya está en el carrito
     const productoExistente = carrito.find(item => item.id === producto.id);
     
     if (productoExistente) {
-        // Incrementar cantidad
         if (productoExistente.cantidad < producto.stock) {
             productoExistente.cantidad++;
             mostrarNotificacion(`${producto.nombre} - Cantidad actualizada`, 'success');
@@ -87,7 +92,6 @@ const agregarAlCarrito = (producto) => {
             return;
         }
     } else {
-        // Agregar nuevo producto
         const etiqueta = producto.etiquetas?.[0]?.tipo || "Sin etiqueta";
         carrito.push({
             id: producto.id,
@@ -126,7 +130,8 @@ const renderizarProductos = (productos) => {
     if (productos.length === 0) {
         tablePadre.innerHTML = `
             <tr>
-                <td colspan="5" class="text-center text-muted">
+                <td colspan="5" class="text-center text-muted py-4">
+                    <i class="bi bi-search fs-1 d-block mb-2"></i>
                     No se encontraron productos
                 </td>
             </tr>
@@ -140,21 +145,9 @@ const renderizarProductos = (productos) => {
     });
 };
 
-// Cargar todos los productos
-const inyectarProductosAlHtml = async () => {
-    console.log("Cargando productos...");
-
-    const rspApi = await consultarApi("http://localhost:3000/api/traer-productos");
-    
-    todosLosProductos = rspApi.productos || [];
-    renderizarProductos(todosLosProductos);
-    actualizarContadorCarrito();
-};
-
-// Buscar productos (filtrado local)
+// Buscar productos (solo por nombre)
 const buscarProductos = () => {
     const nombre = document.getElementById("nombreProducto").value.toLowerCase().trim();
-    const tipo = document.getElementById("tipoProducto").value;
     
     let productosFiltrados = todosLosProductos;
     
@@ -165,22 +158,41 @@ const buscarProductos = () => {
         );
     }
     
-    // Filtrar por tipo
-    if (tipo) {
-        productosFiltrados = productosFiltrados.filter(producto => {
-            const etiqueta = producto.etiquetas?.[0]?.tipo || "";
-            return etiqueta === tipo;
-        });
-    }
-    
     renderizarProductos(productosFiltrados);
 };
 
 // Limpiar búsqueda
 const limpiarBusqueda = () => {
     document.getElementById("nombreProducto").value = '';
-    document.getElementById("tipoProducto").value = '';
     renderizarProductos(todosLosProductos);
+};
+
+// Actualizar sugerencias de autocompletado
+const actualizarSugerencias = () => {
+    const datalist = document.getElementById("sugerencias");
+    if (!datalist) return;
+
+    datalist.innerHTML = "";
+
+    const nombresUnicos = [...new Set(todosLosProductos.map(p => p.nombre))];
+
+    nombresUnicos.forEach(nombre => {
+        const option = document.createElement("option");
+        option.value = nombre;
+        datalist.appendChild(option);
+    });
+};
+
+// Cargar todos los productos
+const inyectarProductosAlHtml = async () => {
+    console.log("Cargando productos...");
+
+    const rspApi = await consultarApi("http://localhost:3000/api/traer-productos");
+    
+    todosLosProductos = rspApi.productos || [];
+    renderizarProductos(todosLosProductos);
+    actualizarContadorCarrito();
+    actualizarSugerencias();
 };
 
 // Enter para buscar
@@ -191,6 +203,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'Enter') {
                 buscarProductos();
             }
+        });
+        
+        // Búsqueda mientras escribe (opcional)
+        inputNombre.addEventListener('input', () => {
+            buscarProductos();
         });
     }
 });

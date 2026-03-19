@@ -7,22 +7,20 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css">
+    <<link rel="stylesheet" href="style.css">
 </head>
 <body>
     
     <div class="container mt-4">
     
-        <!-- Tab-superior -->
+        <!-- Tabs superior -->
         <ul class="nav nav-tabs mb-4 justify-content-between">
-            <!-- Bloque-izq. -->
             <div class="d-flex">
                 <li class="nav-item">
                     <a class="nav-link active" href="index.html">Tienda</a>
                 </li>
             </div>
 
-            <!-- Bloque-der. -->
             <div class="d-flex">
                 <li class="nav-item">
                     <a class="nav-link" href="cuenta.html">
@@ -32,6 +30,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="carrito.html">
                         <i class="bi bi-cart"></i> Carrito
+                        <span id="carritoCount" class="badge bg-danger" style="display: none;">0</span>
                     </a>
                 </li>
             </div>
@@ -39,32 +38,26 @@
 
         <h1 class="mb-4">Tienda</h1>
         
-        <!-- Buscador -->
-        <div class="row mb-3">
-            <div class="col-md-4 mb-2">
-                <label for="nombreProducto" class="form-label">Nombre</label>
-                <input 
-                    type="text"
-                    class="form-control" 
-                    id="nombreProducto"
-                    placeholder="Ingrese el nombre del producto"
-                >
-            </div>
-            
-            <!-- <div class="col-md-4 mb-2">
-                <label for="tipoProducto" class="form-label">Tipo de Producto</label>
-                <select class="form-select" id="tipoProducto">
-                    <option value="">Seleccione tipo</option>
-                    <option value="Alimentos">Alimentos</option>
-                    <option value="Bebidas">Bebidas</option>
-                    <option value="gaseosas">Gaseosas</option>
-                </select>
-            </div> -->
-            
-            <div class="col-md-4 mb-2 d-flex align-items-end gap-2">
-                <button class="btn btn-success" onclick="buscarProductos()">
-                    <i class="bi bi-search"></i> Buscar
-                </button>
+        <!-- Buscador (solo nombre) -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <label for="nombreProducto" class="form-label">Buscar Producto</label>
+                <div class="input-group">
+                    <input 
+                        type="text"
+                        class="form-control" 
+                        id="nombreProducto"
+                        placeholder="Busque su producto aquí..."
+                        list="sugerencias"
+                    >
+                    <button class="btn btn-success" onclick="buscarProductos()">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                    <button class="btn btn-secondary" onclick="limpiarBusqueda()">
+                        <i class="bi bi-x-circle"></i> Limpiar
+                    </button>
+                </div>
+                <datalist id="sugerencias"></datalist>
             </div>
         </div>
         
@@ -81,7 +74,7 @@
                     </tr>
                 </thead>
                 <tbody id="tablePadre">
-                    <!-- Los productos se cargan dinámicamente del JS -->
+                    <!-- Los productos se cargan dinámicamente -->
                 </tbody>
             </table>
         </div>
@@ -91,7 +84,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!--Nuetro JS perzonalizado -->
+    <!-- Tu JS -->
     <script src="main.js"></script>
     
 </body>

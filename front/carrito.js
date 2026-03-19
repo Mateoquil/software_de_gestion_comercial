@@ -34,9 +34,14 @@ const actualizarContadorCarrito = () => {
 const getBadgeClass = (etiqueta) => {
     const colores = {
         "Alimentos": "bg-primary",
-        "Bebidas": "bg-secondary", 
-        "gaseosas": "bg-info",
-        "Sin etiqueta": "bg-danger"
+        "Bebidas": "bg-secondary",
+        "jugos": "bg-secondary",
+        "snacks": "bg-warning",   
+        "Golosinas": "bg-warning",
+        "Lacteos": "bg-primary",
+        "limpieza": "bg-success",
+        "higiene": "bg-success",
+        "Otros": "bg-danger"
     };
     return colores[etiqueta] || "bg-secondary";
 };
