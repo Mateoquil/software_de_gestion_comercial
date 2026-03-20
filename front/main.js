@@ -2,16 +2,19 @@ console.log("INICIO JS - Tienda");
 
 const tablePadre = document.querySelector("#tablePadre");
 let todosLosProductos = [];
+let todasLasEtiquetas = [];
 
 // Consultar API
 const consultarApi = async (url) => {
     try {
+        console.log("Llamando a API:", url);
         const api = await fetch(url);
         const rspApi = await api.json();
+        console.log("Respuesta de API:", rspApi);
         return rspApi;
     } catch (error) {
-        console.error("Error consultando API:", error);
-        return { productos: [] };
+        console.error("ERROR consultando API:", error);
+        return { productos: [], etiquetas: [] };
     }
 };
 
@@ -41,19 +44,25 @@ const actualizarContadorCarrito = () => {
 // Colores para badges
 const getBadgeClass = (etiqueta) => {
     const colores = {
-        "Alimentos": "bg-primary",
-        "Bebidas": "bg-secondary",
-        "Gaseosas": "bg-info",
-        "Jugos": "bg-secondary",
-        "Snacks": "bg-warning",   
-        "Golosinas": "bg-warning",
-        "Lacteos": "bg-primary",
-        "Limpieza": "bg-success",
-        "Higiene": "bg-success",
-        "Otros": "bg-danger",
-        "Sin etiqueta": "bg-danger"
+        "alimentos": "bg-primary",
+        "bebidas": "bg-secondary",
+        "gaseosas": "bg-info",
+        "jugos": "bg-secondary",
+        "snacks": "bg-warning",   
+        "golosinas": "bg-warning",
+        "lacteos": "bg-primary",
+        "limpieza": "bg-success",
+        "higiene": "bg-success",
+        "carnes": "bg-danger",
+        "panaderia": "bg-warning",
+        "verduras": "bg-success",
+        "yogur": "bg-primary",
+        "otros": "bg-danger",
+        "sin etiqueta": "bg-danger"
     };
-    return colores[etiqueta] || "bg-secondary";
+    
+    const etiquetaLower = etiqueta.toLowerCase();
+    return colores[etiquetaLower] || "bg-secondary";
 };
 
 // Crear fila de producto
@@ -145,9 +154,10 @@ const renderizarProductos = (productos) => {
     });
 };
 
-// Buscar productos (solo por nombre)
+// Buscar productos (por nombre Y categoría)
 const buscarProductos = () => {
     const nombre = document.getElementById("nombreProducto").value.toLowerCase().trim();
+    const tipo = document.getElementById("tipoProducto").value;
     
     let productosFiltrados = todosLosProductos;
     
@@ -158,12 +168,21 @@ const buscarProductos = () => {
         );
     }
     
+    // Filtrar por categoría
+    if (tipo) {
+        productosFiltrados = productosFiltrados.filter(producto => {
+            const etiqueta = producto.etiquetas?.[0]?.tipo || "";
+            return etiqueta.toLowerCase() === tipo.toLowerCase();
+        });
+    }
+    
     renderizarProductos(productosFiltrados);
 };
 
 // Limpiar búsqueda
 const limpiarBusqueda = () => {
     document.getElementById("nombreProducto").value = '';
+    document.getElementById("tipoProducto").value = '';
     renderizarProductos(todosLosProductos);
 };
 
@@ -183,20 +202,80 @@ const actualizarSugerencias = () => {
     });
 };
 
+// Cargar etiquetas en el select
+const cargarEtiquetasEnSelect = async () => {
+    console.log("🔵 INICIO - cargarEtiquetasEnSelect");
+    
+    try {
+        const rspApi = await consultarApi("http://localhost:3000/api/traer-etiquetas");
+        console.log("🔵 Respuesta etiquetas:", rspApi);
+        
+        todasLasEtiquetas = rspApi.etiquetas || [];
+        console.log("🔵 Total etiquetas:", todasLasEtiquetas.length);
+        console.log("🔵 Etiquetas array:", todasLasEtiquetas);
+        
+        const select = document.getElementById("tipoProducto");
+        console.log("🔵 Select encontrado:", select ? "SÍ" : "NO");
+        
+        if (!select) {
+            console.error("❌ ERROR: No se encontró el select #tipoProducto");
+            return;
+        }
+        
+        // Limpiar select
+        select.innerHTML = '<option value="">Todas las categorías</option>';
+        console.log("🔵 Select limpiado");
+        
+        // Agregar cada etiqueta
+        todasLasEtiquetas.forEach((etiqueta, index) => {
+            console.log(`🔵 Agregando etiqueta ${index + 1}:`, etiqueta.tipo);
+            const option = document.createElement("option");
+            option.value = etiqueta.tipo;
+            option.textContent = etiqueta.tipo.charAt(0).toUpperCase() + etiqueta.tipo.slice(1);
+            select.appendChild(option);
+        });
+        
+        console.log(`✅ ${todasLasEtiquetas.length} etiquetas cargadas en el select`);
+        console.log("🔵 Opciones en select:", select.options.length);
+        
+    } catch (error) {
+        console.error("❌ ERROR en cargarEtiquetasEnSelect:", error);
+    }
+};
+
 // Cargar todos los productos
 const inyectarProductosAlHtml = async () => {
-    console.log("Cargando productos...");
+    console.log("🟢 INICIO - inyectarProductosAlHtml");
 
     const rspApi = await consultarApi("http://localhost:3000/api/traer-productos");
     
     todosLosProductos = rspApi.productos || [];
+    console.log("🟢 Total productos:", todosLosProductos.length);
+    
     renderizarProductos(todosLosProductos);
     actualizarContadorCarrito();
     actualizarSugerencias();
+    
+    console.log("✅ Productos cargados");
+};
+
+// Inicializar todo
+const inicializar = async () => {
+    console.log("🚀 INICIO - Inicializar");
+    
+    try {
+        await cargarEtiquetasEnSelect();
+        await inyectarProductosAlHtml();
+        console.log("✅ Inicialización completa");
+    } catch (error) {
+        console.error("❌ ERROR en inicializar:", error);
+    }
 };
 
 // Enter para buscar
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("📄 DOM Cargado");
+    
     const inputNombre = document.getElementById('nombreProducto');
     if (inputNombre) {
         inputNombre.addEventListener('keypress', (e) => {
@@ -205,12 +284,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        // Búsqueda mientras escribe (opcional)
         inputNombre.addEventListener('input', () => {
             buscarProductos();
         });
     }
+    
+    // Inicializar
+    inicializar();
 });
-
-// Cargar productos al iniciar
-inyectarProductosAlHtml();

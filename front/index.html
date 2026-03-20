@@ -7,7 +7,7 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     
@@ -38,16 +38,16 @@
 
         <h1 class="mb-4">Tienda</h1>
         
-        <!-- Buscador (solo nombre) -->
+        <!-- Buscador -->
         <div class="row mb-4">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <label for="nombreProducto" class="form-label">Buscar Producto</label>
                 <div class="input-group">
                     <input 
                         type="text"
                         class="form-control" 
                         id="nombreProducto"
-                        placeholder="Busque su producto aquí..."
+                        placeholder="Busque su producto aquí (ej: coca, yogur, arroz...)"
                         list="sugerencias"
                     >
                     <button class="btn btn-success" onclick="buscarProductos()">
@@ -58,6 +58,14 @@
                     </button>
                 </div>
                 <datalist id="sugerencias"></datalist>
+            </div>
+            
+            <div class="col-md-6">
+                <label for="tipoProducto" class="form-label">Filtrar por Categoría</label>
+                <select class="form-select" id="tipoProducto" onchange="buscarProductos()">
+                    <option value="">Todas las categorías</option>
+                    <!-- Las etiquetas se cargan dinámicamente desde la BD -->
+                </select>
             </div>
         </div>
         
