@@ -1,9 +1,9 @@
 console.log("INICIO JS - Tienda");
-
+ 
 const tablePadre = document.querySelector("#tablePadre");
 let todosLosProductos = [];
 let todasLasEtiquetas = [];
-
+ 
 // Consultar API
 const consultarApi = async (url) => {
     try {
@@ -17,19 +17,19 @@ const consultarApi = async (url) => {
         return { productos: [], etiquetas: [] };
     }
 };
-
+ 
 // Obtener carrito de localStorage
 const obtenerCarrito = () => {
     const carrito = localStorage.getItem('carrito');
     return carrito ? JSON.parse(carrito) : [];
 };
-
+ 
 // Guardar carrito en localStorage
 const guardarCarrito = (carrito) => {
     localStorage.setItem('carrito', JSON.stringify(carrito));
     actualizarContadorCarrito();
 };
-
+ 
 // Actualizar contador del carrito
 const actualizarContadorCarrito = () => {
     const carrito = obtenerCarrito();
@@ -40,7 +40,7 @@ const actualizarContadorCarrito = () => {
         badge.style.display = totalItems > 0 ? 'inline' : 'none';
     }
 };
-
+ 
 // Colores para badges
 const getBadgeClass = (etiqueta) => {
     const colores = {
@@ -64,13 +64,13 @@ const getBadgeClass = (etiqueta) => {
     const etiquetaLower = etiqueta.toLowerCase();
     return colores[etiquetaLower] || "bg-secondary";
 };
-
+ 
 // Crear fila de producto
 const crearProducto = (producto) => {
     const fila = document.createElement("tr");
     const etiqueta = producto.etiquetas?.[0]?.tipo || "Sin etiqueta";
     const badgeClass = getBadgeClass(etiqueta);
-
+ 
     fila.innerHTML = `
         <td>${producto.nombre}</td>
         <td><span class="badge ${badgeClass}">${etiqueta}</span></td>
@@ -82,10 +82,10 @@ const crearProducto = (producto) => {
             </button>
         </td>
     `;
-
+ 
     return fila;
 };
-
+ 
 // Agregar producto al carrito
 const agregarAlCarrito = (producto) => {
     let carrito = obtenerCarrito();
@@ -115,7 +115,7 @@ const agregarAlCarrito = (producto) => {
     
     guardarCarrito(carrito);
 };
-
+ 
 // Mostrar notificación
 const mostrarNotificacion = (mensaje, tipo = 'success') => {
     const alerta = document.createElement('div');
@@ -131,7 +131,7 @@ const mostrarNotificacion = (mensaje, tipo = 'success') => {
         alerta.remove();
     }, 3000);
 };
-
+ 
 // Renderizar productos en la tabla
 const renderizarProductos = (productos) => {
     tablePadre.innerHTML = '';
@@ -153,7 +153,7 @@ const renderizarProductos = (productos) => {
         tablePadre.appendChild(fila);
     });
 };
-
+ 
 // Buscar productos (por nombre Y categoría)
 const buscarProductos = () => {
     const nombre = document.getElementById("nombreProducto").value.toLowerCase().trim();
@@ -168,110 +168,90 @@ const buscarProductos = () => {
         );
     }
     
-    // Filtrar por categoría
+    // Filtrar por categoría — busca en TODAS las etiquetas del producto, no solo la primera
     if (tipo) {
-        productosFiltrados = productosFiltrados.filter(producto => {
-            const etiqueta = producto.etiquetas?.[0]?.tipo || "";
-            return etiqueta.toLowerCase() === tipo.toLowerCase();
-        });
+        productosFiltrados = productosFiltrados.filter(producto =>
+            producto.etiquetas.some(e => e.tipo.toLowerCase() === tipo.toLowerCase())
+        );
     }
     
     renderizarProductos(productosFiltrados);
 };
-
+ 
 // Limpiar búsqueda
 const limpiarBusqueda = () => {
     document.getElementById("nombreProducto").value = '';
     document.getElementById("tipoProducto").value = '';
     renderizarProductos(todosLosProductos);
 };
-
+ 
 // Actualizar sugerencias de autocompletado
 const actualizarSugerencias = () => {
     const datalist = document.getElementById("sugerencias");
     if (!datalist) return;
-
+ 
     datalist.innerHTML = "";
-
+ 
     const nombresUnicos = [...new Set(todosLosProductos.map(p => p.nombre))];
-
+ 
     nombresUnicos.forEach(nombre => {
         const option = document.createElement("option");
         option.value = nombre;
         datalist.appendChild(option);
     });
 };
-
-// Cargar etiquetas en el select
-const cargarEtiquetasEnSelect = async () => {
-    console.log("🔵 INICIO - cargarEtiquetasEnSelect");
-    
-    try {
-        const rspApi = await consultarApi("http://localhost:3000/api/traer-etiquetas");
-        console.log("🔵 Respuesta etiquetas:", rspApi);
-        
-        todasLasEtiquetas = rspApi.etiquetas || [];
-        console.log("🔵 Total etiquetas:", todasLasEtiquetas.length);
-        console.log("🔵 Etiquetas array:", todasLasEtiquetas);
-        
-        const select = document.getElementById("tipoProducto");
-        console.log("🔵 Select encontrado:", select ? "SÍ" : "NO");
-        
-        if (!select) {
-            console.error("❌ ERROR: No se encontró el select #tipoProducto");
-            return;
-        }
-        
-        // Limpiar select
-        select.innerHTML = '<option value="">Todas las categorías</option>';
-        console.log("🔵 Select limpiado");
-        
-        // Agregar cada etiqueta
-        todasLasEtiquetas.forEach((etiqueta, index) => {
-            console.log(`🔵 Agregando etiqueta ${index + 1}:`, etiqueta.tipo);
-            const option = document.createElement("option");
-            option.value = etiqueta.tipo;
-            option.textContent = etiqueta.tipo.charAt(0).toUpperCase() + etiqueta.tipo.slice(1);
-            select.appendChild(option);
-        });
-        
-        console.log(`✅ ${todasLasEtiquetas.length} etiquetas cargadas en el select`);
-        console.log("🔵 Opciones en select:", select.options.length);
-        
-    } catch (error) {
-        console.error("❌ ERROR en cargarEtiquetasEnSelect:", error);
-    }
+ 
+// Cargar etiquetas en el select — las saca de los productos ya cargados
+const cargarEtiquetasEnSelect = () => {
+    const select = document.getElementById("tipoProducto");
+    if (!select) return;
+ 
+    // Extraer etiquetas únicas de todos los productos
+    const etiquetasUnicas = [...new Map(
+        todosLosProductos
+            .flatMap(p => p.etiquetas)
+            .map(e => [e.tipo, e])
+    ).values()];
+ 
+    select.innerHTML = '<option value="">Todas las categorías</option>';
+ 
+    etiquetasUnicas.forEach(etiqueta => {
+        const option = document.createElement("option");
+        option.value = etiqueta.tipo;
+        option.textContent = etiqueta.tipo.charAt(0).toUpperCase() + etiqueta.tipo.slice(1);
+        select.appendChild(option);
+    });
+ 
+    console.log(`✅ ${etiquetasUnicas.length} etiquetas cargadas`);
 };
-
+ 
 // Cargar todos los productos
 const inyectarProductosAlHtml = async () => {
-    console.log("🟢 INICIO - inyectarProductosAlHtml");
-
+    console.log("🟢 Cargando productos...");
+ 
     const rspApi = await consultarApi("http://localhost:3000/api/traer-productos");
     
     todosLosProductos = rspApi.productos || [];
-    console.log("🟢 Total productos:", todosLosProductos.length);
+    console.log("🟢 Productos recibidos:", todosLosProductos.length);
     
     renderizarProductos(todosLosProductos);
     actualizarContadorCarrito();
     actualizarSugerencias();
-    
-    console.log("✅ Productos cargados");
 };
-
-// Inicializar todo
+ 
+// Inicializar todo — primero productos, después etiquetas
 const inicializar = async () => {
-    console.log("🚀 INICIO - Inicializar");
+    console.log("🚀 Inicializando...");
     
     try {
-        await cargarEtiquetasEnSelect();
-        await inyectarProductosAlHtml();
+        await inyectarProductosAlHtml();  // primero los productos
+        cargarEtiquetasEnSelect();        // después extraemos las etiquetas de ellos
         console.log("✅ Inicialización completa");
     } catch (error) {
-        console.error("❌ ERROR en inicializar:", error);
+        console.error("❌ Error en inicialización:", error);
     }
 };
-
+ 
 // Enter para buscar
 document.addEventListener('DOMContentLoaded', () => {
     console.log("📄 DOM Cargado");
@@ -284,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
+        // Búsqueda en tiempo real mientras escribe
         inputNombre.addEventListener('input', () => {
             buscarProductos();
         });
